@@ -10,10 +10,89 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="site.css?v=3">
-<style>body.plain { background: radial-gradient(900px 520px at 12% -8%, rgba(77,141,255,.16), transparent 62%), #060d24; }</style>
 <style>
-  .edu-card { display: flex; align-items: center; gap: 16px; padding: 16px 18px; border-radius: 14px; background: var(--glass); border: 1px solid var(--edge); }
-  .edu-card small { display: block; margin-top: 2px; }
+  body.plain { background: radial-gradient(900px 520px at 12% -8%, rgba(77,141,255,.16), transparent 62%), #060d24; }
+
+  /* ---------- About page layout (overrides site.css where needed) ---------- */
+  body.plain { -webkit-text-size-adjust: 100%; overflow-x: hidden; }
+
+  body.plain main.page {
+    display: block;
+    min-height: 100vh;
+    min-height: 100dvh;
+    height: auto;
+    padding: calc(84px + env(safe-area-inset-top, 0px)) clamp(18px, 5vw, 48px) calc(48px + env(safe-area-inset-bottom, 0px));
+    box-sizing: border-box;
+    overflow: visible;
+  }
+  .about-grid {
+    display: grid;
+    grid-template-columns: minmax(280px, 380px) minmax(0, 1fr);
+    gap: clamp(28px, 5vw, 64px);
+    align-items: start;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  .about-side { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+
+  /* Link buttons */
+  body.plain .abtns { display: flex; flex-wrap: wrap; gap: 10px; margin: 0; }
+  body.plain .abtn {
+    display: inline-flex; align-items: center; gap: 8px;
+    min-height: 44px; padding: 0 16px;
+    font: 600 14px/1 Inter, system-ui, sans-serif;
+    text-decoration: none; cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  body.plain .abtn svg { width: 18px; height: 18px; fill: currentColor; flex: none; }
+  body.plain .abtn:focus-visible,
+  body.plain .menu-btn:focus-visible { outline: 2px solid #4d8dff; outline-offset: 3px; }
+
+  /* Experience / education cards */
+  body.plain .exp { display: flex; flex-direction: column; gap: 12px; margin: 0; }
+  .edu-card {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 16px; border-radius: 14px;
+    background: var(--glass, rgba(255,255,255,.06));
+    border: 1px solid var(--edge, rgba(255,255,255,.14));
+    min-width: 0;
+  }
+  .edu-card .logo {
+    flex: none; width: 44px; height: 44px; border-radius: 12px;
+    display: grid; place-items: center;
+    font: 700 13px/1 Inter, system-ui, sans-serif;
+    background: rgba(77,141,255,.16);
+  }
+  .edu-card > span:last-child { min-width: 0; }
+  .edu-card strong { display: block; font-size: 15px; line-height: 1.3; font-weight: 700; }
+  .edu-card small { display: block; margin-top: 3px; font-size: 13px; line-height: 1.4; opacity: .7; }
+
+  /* Bio text */
+  body.plain .bio { min-width: 0; max-width: 60ch; text-align: left; }
+  body.plain .bio h2 {
+    margin: 0 0 12px;
+    font-size: clamp(28px, 6.5vw, 44px);
+    line-height: 1.12; font-weight: 800; letter-spacing: -.02em;
+    overflow-wrap: anywhere;
+  }
+  body.plain .bio p { margin: 0 0 14px; font-size: clamp(16px, 4vw, 18px); line-height: 1.65; opacity: .88; }
+  body.plain .bio p.contact { font-size: 14px; opacity: .6; overflow-wrap: anywhere; }
+
+  /* ---------- Mobile: single column, centred header ---------- */
+  @media (max-width: 760px) {
+    .about-grid { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+    .about-side { align-items: center; }
+    body.plain .abtns { justify-content: center; }
+    body.plain .exp { width: 100%; }
+    body.plain .bio { max-width: none; text-align: center; }
+    /* show the bio first on phones, then the details */
+    .about-grid { display: flex; flex-direction: column; }
+    .about-side { order: 1; width: 100%; }
+    .bio { order: 0; }
+  }
+  @media (max-width: 380px) {
+    body.plain .abtn { flex: 1 1 100%; justify-content: center; }
+  }
 </style>
 </head>
 <body class="plain">
@@ -26,27 +105,28 @@
   <a class="pill" style="--i:4" href="index.html#soon">coming soon</a>
 </nav>
 
-<main class="page" id="about"><div>
-  <div>
-    <div class="photo"><span>FK</span><img src="photo.jpg" alt="Falak Khan" onerror="this.remove()"></div>
-    <div class="abtns">
-      <a class="abtn" href="https://github.com/curiousfalak" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.42c.58.1.79-.25.79-.56v-2c-3.2.7-3.87-1.37-3.87-1.37-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.76 2.7 1.25 3.35.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.78 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"/></svg>github</a>
-      <a class="abtn" href="https://www.linkedin.com/in/falak-khan-636188296/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45Z"/></svg>linkedin</a>
-      <button class="abtn" type="button" id="mailBtn"><svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 4-8 5-8-5V6l8 5 8-5v2Z"/></svg>email</button>
+<main class="page" id="about">
+  <div class="about-grid">
+    <div class="about-side">
+      <div class="abtns">
+        <a class="abtn" href="https://github.com/curiousfalak" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.42c.58.1.79-.25.79-.56v-2c-3.2.7-3.87-1.37-3.87-1.37-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.76 2.7 1.25 3.35.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.78 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"/></svg>GitHub</a>
+        <a class="abtn" href="https://www.linkedin.com/in/falak-khan-636188296/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45Z"/></svg>LinkedIn</a>
+        <button class="abtn" type="button" id="mailBtn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 4-8 5-8-5V6l8 5 8-5v2Z"/></svg>Email</button>
+      </div>
+      <div class="exp" aria-label="Experience and education">
+        <div class="edu-card"><span class="logo">NM</span><span><strong>NexoraMind Tech</strong><small>Backend Developer Intern · Jul – Sep 2026</small></span></div>
+        <div class="edu-card"><span class="logo">LN</span><span><strong>LeafNode Labs</strong><small>Founder, independent venture · Sep 2026 – present</small></span></div>
+        <div class="edu-card"><span class="logo">KI</span><span><strong>KIET Group of Institutions</strong><small>B.Tech CSE · 2023 – 2027</small></span></div>
+      </div>
     </div>
-    <div class="exp" aria-label="Experience and education">
-      <div class="edu-card"><span class="logo">NM</span><span><strong>NexoraMind Tech</strong><small>Backend Developer Intern · Jul – Sep 2026</small></span></div>
-      <div class="edu-card"><span class="logo">LN</span><span><strong>LeafNode Labs</strong><small>Founder, independent venture · Sep 2026 – present</small></span></div>
-      <div class="edu-card"><span class="logo">KI</span><span><strong>KIET Group of Institutions</strong><small>B.Tech CSE · 2023 – 2027</small></span></div>
+    <div class="bio">
+      <h2>Hi, I'm Falak Khan</h2>
+      <p>B.Tech CSE student at KIET. I build backend systems with Java and Spring Boot, and Android apps with Kotlin and Jetpack Compose.</p>
+      <p>Hackathon competitor with 600+ problems solved on LeetCode.</p>
+      <p class="contact">falakkhandec03 [at] gmail [dot] com</p>
     </div>
   </div>
-  <div class="bio">
-    <h2>Hi, I'm Falak Khan</h2>
-    <p>falakkhandec03 [at] gmail [dot] com</p>
-    <p>B.Tech CSE student at KIET, building backend systems with Java and Spring Boot and Android apps with Kotlin and Jetpack Compose.</p>
-    <p>Hackathon competitor, with 600+ problems solved on LeetCode.</p>
-  </div>
-</div></main>
+</main>
 
 <script>
 (() => {
