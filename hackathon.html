@@ -9,11 +9,31 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=3">
+<link rel="stylesheet" href="site.css?v=7">
 <style>
   body.plain { background: radial-gradient(900px 520px at 12% -8%, rgba(77,141,255,.16), transparent 62%), #060d24; }
+  body.plain { -webkit-text-size-adjust: 100%; overflow-x: hidden; }
   html { scroll-behavior: smooth; }
-  #hack > div { width: min(820px, 100%); }
+
+  /* fix: site.css's default .page is position:fixed + inset:0, which combined with
+     body{overflow:hidden} can clip content at the top on mobile browsers.
+     Override it to a normal, scrollable block layout, same treatment as about/projects. */
+  body.plain main.page {
+    position: static;
+    display: block;
+    min-height: 100vh;
+    min-height: 100dvh;
+    height: auto;
+    padding: calc(84px + env(safe-area-inset-top, 0px)) clamp(18px, 5vw, 48px) calc(48px + env(safe-area-inset-bottom, 0px));
+    box-sizing: border-box;
+    overflow: visible;
+  }
+
+  /* fix: site.css's global `main { text-align: center; }` was inherited here since
+     nothing on this page overrode it — left-align everything explicitly */
+  #hack > div { width: min(820px, 100%); text-align: left; margin: 0 auto; }
+  #hack h2, #hack .lead, #hack .more { text-align: left; }
+
   #hack .lead { margin: 12px 0 0; }
   .rows { list-style: none; margin: 44px 0 0; padding: 0; border-top: 1px solid var(--edge); }
   .row {
@@ -24,7 +44,7 @@
   .row:hover { background: rgba(255,255,255,.05); }
   @keyframes rise { from { opacity: 0; transform: translateY(14px); } }
   .year { flex: none; width: 88px; white-space: nowrap; font-weight: 600; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
-  .what { flex: 1; min-width: 0; }
+  .what { flex: 1; min-width: 0; text-align: left; }
   .what h3 { margin: 0; font-size: 1.25rem; font-weight: 700; letter-spacing: -.01em; }
   #hack .what p { margin: 4px 0 0; font-size: 1rem; }
   .result {
