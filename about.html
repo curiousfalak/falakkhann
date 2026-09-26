@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=3">
+<link rel="stylesheet" href="site.css?v=7">
 <style>
   body.plain { background: radial-gradient(900px 520px at 12% -8%, rgba(77,141,255,.16), transparent 62%), #060d24; }
 
@@ -33,7 +33,7 @@
     max-width: 960px;
     margin: 0 auto;
   }
-  .about-side { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+  .about-side { display: flex; flex-direction: column; gap: 20px; min-width: 0; text-align: left; }
 
   /* Link buttons */
   body.plain .abtns { display: flex; flex-wrap: wrap; gap: 10px; margin: 0; }
@@ -51,21 +51,17 @@
   /* Experience / education cards */
   body.plain .exp { display: flex; flex-direction: column; gap: 12px; margin: 0; }
   .edu-card {
-    display: flex; align-items: center; gap: 14px;
+    display: flex; flex-direction: column; justify-content: center;
+    min-height: 72px;
     padding: 14px 16px; border-radius: 14px;
     background: var(--glass, rgba(255,255,255,.06));
     border: 1px solid var(--edge, rgba(255,255,255,.14));
     min-width: 0;
+    box-sizing: border-box;
   }
-  .edu-card .logo {
-    flex: none; width: 44px; height: 44px; border-radius: 12px;
-    display: grid; place-items: center;
-    font: 700 13px/1 Inter, system-ui, sans-serif;
-    background: rgba(77,141,255,.16);
-  }
-  .edu-card > span:last-child { min-width: 0; }
   .edu-card strong { display: block; font-size: 15px; line-height: 1.3; font-weight: 700; }
   .edu-card small { display: block; margin-top: 3px; font-size: 13px; line-height: 1.4; opacity: .7; }
+  .edu-card .nowrap-date { white-space: nowrap; }
 
   /* Bio text */
   body.plain .bio { min-width: 0; max-width: 60ch; text-align: left; }
@@ -114,9 +110,9 @@
         <button class="abtn" type="button" id="mailBtn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 4-8 5-8-5V6l8 5 8-5v2Z"/></svg>Email</button>
       </div>
       <div class="exp" aria-label="Experience and education">
-        <div class="edu-card"><span class="logo">NM</span><span><strong>NexoraMind Tech</strong><small>Backend Developer Intern · Jul – Sep 2026</small></span></div>
-        <div class="edu-card"><span class="logo">LN</span><span><strong>LeafNode Labs</strong><small>Founder, independent venture · Sep 2026 – present</small></span></div>
-        <div class="edu-card"><span class="logo">KI</span><span><strong>KIET Group of Institutions</strong><small>B.Tech CSE · 2023 – 2027</small></span></div>
+        <div class="edu-card"><strong>NexoraMind Tech</strong><small>Backend Developer Intern · <span class="nowrap-date">Jul – Sep 2026</span></small></div>
+        <div class="edu-card"><strong>LeafNode Labs</strong><small>Founder, independent venture · <span class="nowrap-date">Sep 2026 – present</span></small></div>
+        <div class="edu-card"><strong>KIET Group of Institutions</strong><small>B.Tech CSE · <span class="nowrap-date">2023 – 2027</span></small></div>
       </div>
     </div>
     <div class="bio">
