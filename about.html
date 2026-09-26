@@ -3,24 +3,28 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Projects | Falak Khan</title>
-<meta name="description" content="Projects by Falak Khan.">
+<title>About | Falak Khan</title>
+<meta name="description" content="About Falak Khan, CSE student at KIET.">
 <meta name="theme-color" content="#030817">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="site.css?v=7">
 <style>
   body.plain { background: radial-gradient(900px 520px at 12% -8%, rgba(77,141,255,.16), transparent 62%), #060d24; }
-  /* fix: site.css sets body { overflow: hidden; height: 100%; } and .page {
-     position: fixed; inset: 0; } globally, which together block scrolling once
-     content grows past one viewport. Override both here. */
+
+  /* ---------- About page layout (overrides site.css where needed) ---------- */
+  /* fix: site.css sets body { overflow: hidden; height: 100%; } globally, which
+     blocks scrolling entirely once content grows past one viewport. Override it
+     here so the document can actually scroll. */
   body.plain {
+    -webkit-text-size-adjust: 100%;
     overflow-x: hidden;
     overflow-y: auto;
     height: auto;
     min-height: 100dvh;
   }
+
   body.plain main.page {
     position: static;
     display: block;
@@ -29,141 +33,73 @@
     box-sizing: border-box;
     overflow: visible;
   }
-  #proj > div { width: min(920px, 100%); text-align: left; }
-
-  /* ---- header row ---- */
-  .proj-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-  .proj-count { font-family: 'JetBrains Mono', monospace; font-size: .72rem; color: var(--ink-soft); letter-spacing: .02em; opacity: .75; }
-
-  /* ---- manifest list ---- */
-  .pmanifest { margin: 22px 0 0; border-top: 1px solid var(--edge); }
-
-  .prow { border-bottom: 1px solid var(--edge); position: relative; }
-
-  .prow summary {
-    list-style: none; cursor: pointer; display: flex; align-items: center; gap: 12px;
-    padding: 13px 6px 13px 15px; outline: none;
+  .about-grid {
+    display: grid;
+    grid-template-columns: minmax(280px, 380px) minmax(0, 1fr);
+    gap: clamp(28px, 5vw, 64px);
+    align-items: start;
+    max-width: 960px;
+    margin: 0 auto;
   }
-  .prow summary::-webkit-details-marker { display: none; }
-  .prow summary::marker { content: ''; }
+  .about-side { display: flex; flex-direction: column; gap: 20px; min-width: 0; text-align: left; }
 
-  /* viewfinder brackets — the "lens" mark, appears on hover/focus/open */
-  .prow summary::before, .prow summary::after { content: none; }
-  .prow {
-    transition: background .15s ease, transform .15s ease;
-    animation: rowIn .5s cubic-bezier(.16,1,.3,1) backwards;
-    animation-delay: calc(var(--i, 0) * 55ms);
+  /* Link buttons */
+  body.plain .abtns { display: flex; flex-wrap: wrap; gap: 10px; margin: 0; }
+  body.plain .abtn {
+    display: inline-flex; align-items: center; gap: 8px;
+    min-height: 44px; padding: 0 16px;
+    font: 600 14px/1 Inter, system-ui, sans-serif;
+    text-decoration: none; cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
   }
-  @keyframes rowIn { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: none; } }
-  @media (prefers-reduced-motion: reduce) { .prow { animation: none; } }
-  .prow:hover, .prow:focus-within, .prow[open] { background: rgba(77,141,255,.045); transform: translateX(2px); }
+  body.plain .abtn svg { width: 18px; height: 18px; fill: currentColor; flex: none; }
+  body.plain .abtn:focus-visible,
+  body.plain .menu-btn:focus-visible { outline: 2px solid #4d8dff; outline-offset: 3px; }
 
-  /* colour-coded accent bar — every row gets its project's hue, brightens on interaction */
-  .prow::before {
-    content: ''; position: absolute; left: 0; top: 9px; bottom: 9px; width: 3px; border-radius: 3px;
-    background: var(--rc, var(--accent)); opacity: .45;
-    transition: opacity .15s ease, width .15s ease;
+  /* Experience / education cards */
+  body.plain .exp { display: flex; flex-direction: column; gap: 12px; margin: 0; }
+  .edu-card {
+    display: flex; flex-direction: column; justify-content: center;
+    min-height: 72px;
+    padding: 14px 16px; border-radius: 14px;
+    background: var(--glass, rgba(255,255,255,.06));
+    border: 1px solid var(--edge, rgba(255,255,255,.14));
+    min-width: 0;
+    box-sizing: border-box;
   }
-  .prow:hover::before, .prow:focus-within::before, .prow[open]::before { opacity: 1; width: 4px; }
-  .prow summary { position: relative; }
-  .prow summary .bracket { position: absolute; width: 8px; height: 8px; opacity: 0; transition: opacity .15s ease; pointer-events: none; }
-  .prow summary .bracket.tl { top: 4px; left: -1px; border-top: 1.5px solid var(--accent); border-left: 1.5px solid var(--accent); }
-  .prow summary .bracket.br { bottom: 4px; right: -1px; border-bottom: 1.5px solid var(--accent); border-right: 1.5px solid var(--accent); }
-  .prow:hover summary .bracket, .prow:focus-within summary .bracket, .prow[open] summary .bracket { opacity: .8; }
+  .edu-card strong { display: block; font-size: 15px; line-height: 1.3; font-weight: 700; }
+  .edu-card small { display: block; margin-top: 3px; font-size: 13px; line-height: 1.4; opacity: .7; }
+  .edu-card .nowrap-date { white-space: nowrap; }
 
-  .prow-thumb { flex: none; width: 30px; height: 30px; border-radius: 8px; overflow: hidden; box-shadow: 0 0 0 1px rgba(255,255,255,.06); }
-  .prow-thumb img, .prow-thumb svg { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-  .prow-name { font-weight: 700; font-size: .92rem; letter-spacing: -.01em; flex: none; }
-
-  .pbadge {
-    font-size: .6rem; font-weight: 600; padding: 2px 7px; border-radius: 999px;
-    border: 1px solid rgba(251,191,36,.4); background: rgba(251,191,36,.08); color: #fbbf24;
-    white-space: nowrap; flex: none;
+  /* Bio text */
+  body.plain .bio { min-width: 0; max-width: 60ch; text-align: left; }
+  body.plain .bio h2 {
+    margin: 0 0 12px;
+    font-size: clamp(28px, 6.5vw, 44px);
+    line-height: 1.12; font-weight: 800; letter-spacing: -.02em;
+    overflow-wrap: anywhere;
   }
-  .pbadge.release {
-    border-color: rgba(167,139,250,.45); background: rgba(167,139,250,.1); color: #a78bfa;
+  body.plain .bio p { margin: 0 0 14px; font-size: clamp(16px, 4vw, 18px); line-height: 1.65; opacity: .88; }
+  body.plain .bio p.contact { font-size: 14px; opacity: .6; overflow-wrap: anywhere; }
+
+  /* ---------- Mobile: single column, centred header ---------- */
+  @media (max-width: 760px) {
+    .about-grid { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+    .about-side { align-items: center; }
+    body.plain .abtns { justify-content: center; }
+    body.plain .exp { width: 100%; }
+    body.plain .bio { max-width: none; text-align: center; }
+    /* show the bio first on phones, then the details */
+    .about-grid { display: flex; flex-direction: column; }
+    .about-side { order: 1; width: 100%; }
+    .bio { order: 0; }
   }
-
-  .prow-preview {
-    font-family: 'JetBrains Mono', monospace; font-size: .68rem; color: var(--ink-soft);
-    opacity: .6; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    flex: 1 1 auto; min-width: 0;
-  }
-
-  .prow-chev {
-    flex: none; width: 16px; height: 16px; color: var(--ink-soft); opacity: .55;
-    transition: transform .18s ease;
-  }
-  .prow[open] .prow-chev { transform: rotate(180deg); }
-
-  .pbody { padding: 2px 6px 18px 53px; animation: pfade .18s ease; }
-  @keyframes pfade { from { opacity: 0; transform: translateY(-3px); } to { opacity: 1; transform: none; } }
-
-  #proj .pdesc { margin: 0 0 12px; font-size: .84rem; line-height: 1.55; color: var(--ink-soft); text-align: left; max-width: 62ch; }
-
-  .stack { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 14px; }
-  .stack span { padding: 2px 8px; border-radius: 999px; font-size: .66rem; font-weight: 500; font-family: 'JetBrains Mono', monospace; border: 1px solid var(--edge); color: var(--ink-soft); }
-
-  .pgo {
-    display: inline-block; padding: 6px 14px; border-radius: 999px;
-    font-weight: 600; font-size: .78rem; color: var(--ink); text-decoration: none;
-    border: 1px solid rgba(77,141,255,.7); background: rgba(77,141,255,.16);
-    transition: background .2s ease;
-  }
-  .pgo:hover { background: rgba(77,141,255,.4); }
-
-  .pgo.ghbtn {
-    display: inline-flex; align-items: center; gap: 6px;
-    border-color: rgba(167,139,250,.65); background: rgba(167,139,250,.14);
-  }
-  .pgo.ghbtn:hover { background: rgba(167,139,250,.32); }
-  .pgo.ghbtn svg { width: 13px; height: 13px; flex: none; }
-
-  @media (max-width: 560px) {
-    .prow-preview { display: none; }
-    .pbody { padding-left: 15px; }
-  }
-
-  /* ---- SwapQR hero callout ---- */
-  .proj-hero {
-    display: flex; align-items: center; gap: 16px; margin: 22px 0 26px; padding: 18px 20px;
-    border-radius: 16px; position: relative; overflow: hidden; text-align: left;
-    background: linear-gradient(120deg, rgba(251,191,36,.16), rgba(244,63,94,.1) 55%, rgba(6,13,36,0));
-    border: 1px solid rgba(251,191,36,.35);
-    animation: rowIn .5s cubic-bezier(.16,1,.3,1) backwards; animation-delay: 40ms;
-  }
-  .proj-hero-icon {
-    flex: none; width: 52px; height: 52px; border-radius: 13px; overflow: hidden;
-    box-shadow: 0 8px 22px -8px rgba(251,191,36,.55), 0 0 0 1px rgba(255,255,255,.08);
-    animation: vmFloat 2.6s ease-in-out infinite;
-  }
-  .proj-hero-icon img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  @keyframes vmFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
-  @media (prefers-reduced-motion: reduce) { .proj-hero-icon { animation: none; } }
-
-  .proj-hero-text { flex: 1 1 auto; min-width: 0; text-align: left; }
-  .proj-hero-text h3 { margin: 0 0 3px; font-size: 1.02rem; font-weight: 800; letter-spacing: -.01em; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-  .proj-hero-text p { margin: 0; font-size: .82rem; line-height: 1.5; color: var(--ink-soft); max-width: 46ch; text-align: left; }
-
-  .proj-hero-cta {
-    flex: none; padding: 10px 18px; border-radius: 999px; font-weight: 700; font-size: .82rem;
-    font-family: 'JetBrains Mono', monospace; border: none; cursor: pointer; text-decoration: none;
-    background: linear-gradient(135deg, #fbbf24, #f43f5e); color: #2a0a05;
-    box-shadow: 0 6px 18px -6px rgba(251,191,36,.6); transition: transform .15s ease, box-shadow .15s ease;
-    display: inline-block;
-  }
-  .proj-hero-cta:hover { transform: translateY(-1px); box-shadow: 0 10px 22px -6px rgba(251,191,36,.8); }
-
-  @media (max-width: 560px) {
-    .proj-hero { flex-wrap: wrap; }
-    .proj-hero-cta { width: 100%; text-align: center; }
+  @media (max-width: 380px) {
+    body.plain .abtn { flex: 1 1 100%; justify-content: center; }
   }
 </style>
-
 </head>
 <body class="plain">
-
 <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><span></span></button>
 <nav class="menu" id="menu" aria-label="Site menu">
   <a class="pill" style="--i:0" href="index.html#home">home</a>
@@ -173,142 +109,28 @@
   <a class="pill" style="--i:4" href="index.html#soon">coming soon</a>
 </nav>
 
-<main class="page" id="proj"><div>
-
-  <div class="proj-head">
-    <h2>projects</h2>
-    <span class="proj-count">6 shipped — click a row to expand</span>
-  </div>
-
-  <div class="proj-hero">
-    <div class="proj-hero-icon"><img src="swapqr-logo.jpg" alt="SwapQR logo"></div>
-    <div class="proj-hero-text">
-      <h3>SwapQR <span class="pbadge">Coming to Google Play</span></h3>
-      <p>QR-based contact sharing — scan, save, done in under a second, zero manual typing. In closed testing now, launching soon on Google Play.</p>
+<main class="page" id="about">
+  <div class="about-grid">
+    <div class="about-side">
+      <div class="abtns">
+        <a class="abtn" href="https://github.com/curiousfalak" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.42c.58.1.79-.25.79-.56v-2c-3.2.7-3.87-1.37-3.87-1.37-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.76 2.7 1.25 3.35.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.78 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"/></svg>GitHub</a>
+        <a class="abtn" href="https://www.linkedin.com/in/falak-khan-636188296/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45Z"/></svg>LinkedIn</a>
+        <button class="abtn" type="button" id="mailBtn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 4-8 5-8-5V6l8 5 8-5v2Z"/></svg>Email</button>
+      </div>
+      <div class="exp" aria-label="Experience and education">
+        <div class="edu-card"><strong>NexoraMind Tech</strong><small>Backend Developer Intern · <span class="nowrap-date">Jul – Sep 2026</span></small></div>
+        <div class="edu-card"><strong>LeafNode Labs</strong><small>Founder, independent venture · <span class="nowrap-date">Sep 2026 – present</span></small></div>
+        <div class="edu-card"><strong>KIET Group of Institutions</strong><small>B.Tech CSE · <span class="nowrap-date">2023 – 2027</span></small></div>
+      </div>
     </div>
-    <a class="proj-hero-cta" href="https://swapqrr.vercel.app/" target="_blank" rel="noopener">▸ Visit site</a>
+    <div class="bio">
+      <h2>Hi, I'm Falak Khan</h2>
+      <p>B.Tech CSE student at KIET. I build backend systems with Java and Spring Boot, and Android apps with Kotlin and Jetpack Compose.</p>
+      <p>Hackathon competitor with 600+ problems solved on LeetCode.</p>
+      <p class="contact">falakkhandec03 [at] gmail [dot] com</p>
+    </div>
   </div>
-
-  <div class="pmanifest">
-
-    <details class="prow" style="--rc:#6366f1;--i:0">
-      <summary>
-        <span class="bracket tl"></span><span class="bracket br"></span>
-        <span class="prow-thumb">
-          <svg viewBox="0 0 112 112" xmlns="http://www.w3.org/2000/svg">
-            <defs><linearGradient id="sfgrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6366f1"/><stop offset="1" stop-color="#3b82f6"/></linearGradient></defs>
-            <rect width="112" height="112" fill="url(#sfgrad)"/>
-            <path d="M56 30 L84 54 L84 84 L64 84 L64 64 L48 64 L48 84 L28 84 L28 54 Z" fill="#fff" opacity="0.95"/>
-          </svg>
-        </span>
-        <span class="prow-name">StayFinder</span>
-        <span class="pbadge release">GitHub release</span>
-        <span class="prow-preview">Java 21 · Spring Boot · Redis · Elasticsearch</span>
-        <svg class="prow-chev" viewBox="0 0 20 20" fill="none"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </summary>
-      <div class="pbody">
-        <p class="pdesc">Redis-based distributed locking preventing double bookings under concurrent load, with Elasticsearch-backed search across thousands of listings, rate-limited to 100 req/min per IP.</p>
-        <div class="stack"><span>Java 21</span><span>Spring Boot</span><span>PostgreSQL</span><span>Redis</span><span>Elasticsearch</span></div>
-        <a class="pgo ghbtn" href="https://github.com/curiousfalak/stayfinder/releases/tag/v1.0.0" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38v-1.49c-2.22.48-2.69-1.07-2.69-1.07-.36-.93-.89-1.17-.89-1.17-.72-.5.06-.49.06-.49.8.06 1.22.82 1.22.82.71 1.22 1.87.87 2.33.66.07-.52.28-.87.5-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.03 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>GitHub release</a>
-      </div>
-    </details>
-
-    <details class="prow" style="--rc:#f43f5e;--i:1">
-      <summary>
-        <span class="bracket tl"></span><span class="bracket br"></span>
-        <span class="prow-thumb">
-          <svg viewBox="0 0 112 112" xmlns="http://www.w3.org/2000/svg">
-            <defs><linearGradient id="fcgrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f43f5e"/><stop offset="1" stop-color="#a855f7"/></linearGradient></defs>
-            <rect width="112" height="112" fill="url(#fcgrad)"/>
-            <circle cx="44" cy="46" r="11" fill="#fff" opacity="0.95"/>
-            <circle cx="72" cy="46" r="11" fill="#fff" opacity="0.7"/>
-            <circle cx="58" cy="72" r="11" fill="#fff" opacity="0.85"/>
-          </svg>
-        </span>
-        <span class="prow-name">FaceCollage</span>
-        <span class="pbadge release">GitHub release</span>
-        <span class="prow-preview">Kotlin · ML Kit · TensorFlow Lite · MobileFaceNet</span>
-        <svg class="prow-chev" viewBox="0 0 20 20" fill="none"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </summary>
-      <div class="pbody">
-        <p class="pdesc">MobileFaceNet-based face clustering — groups every appearance of a person across a video and renders a best-shot collage, fully on-device.</p>
-        <div class="stack"><span>Kotlin</span><span>ML Kit</span><span>TensorFlow Lite</span><span>MobileFaceNet</span></div>
-        <a class="pgo ghbtn" href="https://github.com/curiousfalak/uniquePersnChlg/releases/tag/v1.0.0" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38v-1.49c-2.22.48-2.69-1.07-2.69-1.07-.36-.93-.89-1.17-.89-1.17-.72-.5.06-.49.06-.49.8.06 1.22.82 1.22.82.71 1.22 1.87.87 2.33.66.07-.52.28-.87.5-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.03 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>GitHub release</a>
-      </div>
-    </details>
-
-    <details class="prow" style="--rc:#a855f7;--i:2">
-      <summary>
-        <span class="bracket tl"></span><span class="bracket br"></span>
-        <span class="prow-thumb">
-          <svg viewBox="0 0 112 112" xmlns="http://www.w3.org/2000/svg">
-            <defs><linearGradient id="pbgrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a855f7"/><stop offset="1" stop-color="#6366f1"/></linearGradient></defs>
-            <rect width="112" height="112" fill="url(#pbgrad)"/>
-            <polygon points="46,36 46,76 80,56" fill="#fff" opacity="0.95"/>
-          </svg>
-        </span>
-        <span class="prow-name">PlayBox2</span>
-        <span class="pbadge release">GitHub release</span>
-        <span class="prow-preview">Kotlin · ExoPlayer · Node.js · Express</span>
-        <svg class="prow-chev" viewBox="0 0 20 20" fill="none"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </summary>
-      <div class="pbody">
-        <p class="pdesc">Chunked-upload VOD pipeline with server-side merging and range-request streaming to ExoPlayer, offline-cached via Room.</p>
-        <div class="stack"><span>Kotlin</span><span>Jetpack Compose</span><span>ExoPlayer</span><span>Node.js</span><span>Express</span></div>
-        <a class="pgo ghbtn" href="https://github.com/curiousfalak/PlayBox2/releases/tag/v1.0.0" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38v-1.49c-2.22.48-2.69-1.07-2.69-1.07-.36-.93-.89-1.17-.89-1.17-.72-.5.06-.49.06-.49.8.06 1.22.82 1.22.82.71 1.22 1.87.87 2.33.66.07-.52.28-.87.5-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.03 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>GitHub release</a>
-      </div>
-    </details>
-
-    <details class="prow" style="--rc:#14b8a6;--i:3">
-      <summary>
-        <span class="bracket tl"></span><span class="bracket br"></span>
-        <span class="prow-thumb">
-          <svg viewBox="0 0 112 112" xmlns="http://www.w3.org/2000/svg">
-            <defs><linearGradient id="nlgrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0ea5e9"/><stop offset="1" stop-color="#0d9488"/></linearGradient></defs>
-            <rect width="112" height="112" fill="url(#nlgrad)"/>
-            <path d="M20 60 Q40 40 56 60 T92 60" stroke="#fff" stroke-width="6" fill="none" opacity="0.95"/>
-            <path d="M20 76 Q40 56 56 76 T92 76" stroke="#fff" stroke-width="6" fill="none" opacity="0.7"/>
-            <circle cx="68" cy="40" r="9" fill="#fff" opacity="0.95"/>
-          </svg>
-        </span>
-        <span class="prow-name">Nature Lens</span>
-        <span class="pbadge release">GitHub release</span>
-        <span class="prow-preview">Kotlin · TensorFlow Lite · CNN</span>
-        <svg class="prow-chev" viewBox="0 0 20 20" fill="none"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </summary>
-      <div class="pbody">
-        <p class="pdesc">CNN-based TFLite classifier running fully on-device across 9 marine species, auto-geotagging every sighting and firing local alerts on reported threats.</p>
-        <div class="stack"><span>Kotlin</span><span>Jetpack Compose</span><span>TensorFlow Lite</span><span>CNN</span></div>
-        <a class="pgo ghbtn" href="https://github.com/curiousfalak/bitbox_bytecrafters/releases/tag/v1.0.0" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38v-1.49c-2.22.48-2.69-1.07-2.69-1.07-.36-.93-.89-1.17-.89-1.17-.72-.5.06-.49.06-.49.8.06 1.22.82 1.22.82.71 1.22 1.87.87 2.33.66.07-.52.28-.87.5-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.03 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>GitHub release</a>
-      </div>
-    </details>
-
-    <details class="prow" style="--rc:#f97316;--i:4">
-      <summary>
-        <span class="bracket tl"></span><span class="bracket br"></span>
-        <span class="prow-thumb">
-          <svg viewBox="0 0 112 112" xmlns="http://www.w3.org/2000/svg">
-            <defs><linearGradient id="aagrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f97316"/><stop offset="1" stop-color="#ec4899"/></linearGradient></defs>
-            <rect width="112" height="112" fill="url(#aagrad)"/>
-            <circle cx="56" cy="38" r="14" fill="#fff" opacity="0.95"/>
-            <path d="M32 88 Q56 58 80 88" stroke="#fff" stroke-width="7" fill="none" opacity="0.95" stroke-linecap="round"/>
-          </svg>
-        </span>
-        <span class="prow-name">Aarogya</span>
-        <span class="pbadge release">GitHub release</span>
-        <span class="prow-preview">Kotlin · MoveNet · FastAPI · Firebase</span>
-        <svg class="prow-chev" viewBox="0 0 20 20" fill="none"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </summary>
-      <div class="pbody">
-        <p class="pdesc">MoveNet + MediaPipe pose pipeline tracking 33 body landmarks for real-time form correction, plus live biometric sync via Fitbit and Wear OS APIs.</p>
-        <div class="stack"><span>Kotlin</span><span>TensorFlow Lite</span><span>MoveNet</span><span>FastAPI</span><span>Firebase</span></div>
-        <a class="pgo ghbtn" href="https://github.com/curiousfalak/Aarogya/releases/tag/v1.0.0" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38v-1.49c-2.22.48-2.69-1.07-2.69-1.07-.36-.93-.89-1.17-.89-1.17-.72-.5.06-.49.06-.49.8.06 1.22.82 1.22.82.71 1.22 1.87.87 2.33.66.07-.52.28-.87.5-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.03 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>GitHub release</a>
-      </div>
-    </details>
-
-  </div>
-</div></main>
-
+</main>
 
 <script>
 (() => {
@@ -320,18 +142,12 @@
   };
   btn.addEventListener('click', () => set(!document.body.classList.contains('open')));
   addEventListener('keydown', e => { if (e.key === 'Escape') set(false); });
-  // "projects" is this page, so just close the menu
-  document.querySelector('.pill[href="projects.html"]').addEventListener('click', e => { e.preventDefault(); set(false); });
-
-  // only one manifest row open at a time, for a tidier scan
-  document.querySelectorAll('.prow').forEach(row => {
-    row.addEventListener('toggle', () => {
-      if (!row.open) return;
-      document.querySelectorAll('.prow').forEach(o => { if (o !== row) o.open = false; });
-    });
+  // "about" is this page, so just close the menu
+  document.querySelector('.pill[href="about.html"]').addEventListener('click', e => { e.preventDefault(); set(false); });
+  document.getElementById('mailBtn').addEventListener('click', () => {
+    location.href = 'mailto:' + 'falakkhandec03' + '@' + 'gmail.com';
   });
 })();
-
 </script>
 </body>
 </html>
