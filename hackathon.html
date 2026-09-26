@@ -12,17 +12,24 @@
 <link rel="stylesheet" href="site.css?v=7">
 <style>
   body.plain { background: radial-gradient(900px 520px at 12% -8%, rgba(77,141,255,.16), transparent 62%), #060d24; }
-  body.plain { -webkit-text-size-adjust: 100%; overflow-x: hidden; }
+  body.plain { -webkit-text-size-adjust: 100%; }
+  /* fix: site.css sets body { overflow: hidden; height: 100%; } globally, which
+     blocks scrolling entirely once content grows past one viewport. Override it
+     here so the document can actually scroll on pages with real content length. */
+  body.plain {
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: auto;
+    min-height: 100dvh;
+  }
   html { scroll-behavior: smooth; }
 
-  /* fix: site.css's default .page is position:fixed + inset:0, which combined with
-     body{overflow:hidden} can clip content at the top on mobile browsers.
-     Override it to a normal, scrollable block layout, same treatment as about/projects. */
+  /* fix: site.css's default .page is position:fixed + inset:0, which pins it to
+     the viewport regardless of body's own scroll — override to normal flow so
+     it grows with its content and the page scrolls naturally. */
   body.plain main.page {
     position: static;
     display: block;
-    min-height: 100vh;
-    min-height: 100dvh;
     height: auto;
     padding: calc(84px + env(safe-area-inset-top, 0px)) clamp(18px, 5vw, 48px) calc(48px + env(safe-area-inset-bottom, 0px));
     box-sizing: border-box;
